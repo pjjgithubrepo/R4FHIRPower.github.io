@@ -199,10 +199,10 @@ function appointmentJSON(slotReference, patientReference) {
         actor: {
           reference: patientReference
         },
-        status: 'needs-action'
+        status: 'accepted'
       }
     ],
-    status: 'proposed'
+    status: 'booked'
   };
 }
 
