@@ -85,7 +85,7 @@ FHIR.oauth2.ready(function(smart) {
 }
 //changing type to servicetype
 function slotHTML(id, serviceType, start, end) {
-  console.log('Slot: id:[' + id + '] Servicetype:[' + serviceType + '] start:[' + start + '] end:[' + end + ']');
+  console.log('Slot: id:[' + id + '] serviceType:[' + serviceType + '] start:[' + start + '] end:[' + end + ']');
   var slotReference = 'Slot/' + id,
       prettyStart = new Date(start).toISOString(),
       prettyEnd = new Date(end).toISOString();
