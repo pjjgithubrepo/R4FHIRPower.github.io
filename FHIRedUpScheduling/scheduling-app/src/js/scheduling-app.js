@@ -56,8 +56,7 @@ var endDateString = endDateObj.toISOString();
 slotParams['start'] = {$ge: startDateString, $lt: endDateString};
 
 FHIR.oauth2.ready(function(smart) {
-  // Your FHIR OAuth2 logic here
-});
+  
 
     
     
@@ -67,17 +66,6 @@ FHIR.oauth2.ready(function(smart) {
     //slotParams: This object contains the query parameters for the fetchAll() function.
     // then(): This function handles the resolved promise from the fetchAll() function.
     smart.api.fetchAll({type: 'Slot', query: slotParams}).then(
-
-      // Display Appointment information if the call succeeded
-
-      //The code you provided is a JavaScript function that takes an array of slots as its argument and renders them as HTML. The function first checks if the array of slots is empty. If it is not empty, the function creates a variable called slotsHTML and initializes it to an empty string. The function then loops through the array of slots and calls a function called slotHTML() for each slot. The slotHTML() function takes the ID, type, start, and end time of a slot as its arguments and returns an HTML string that represents the slot. The slotHTML() function is defined as follows: function slotHTML(id, type, start, end) {
-  // return `<div class="slot">
- // <h3>Slot ID: ${id}</h3>
- // <p>Type: ${type}</p>
- // <p>Start time: ${start}</p>
- // <p>End time: ${end}</p>
-// </div>`;
-// }
 
       function(slots) {
         // If any Slots matched the criteria, display them
