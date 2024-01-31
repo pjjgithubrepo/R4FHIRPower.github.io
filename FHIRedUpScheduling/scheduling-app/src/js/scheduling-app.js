@@ -22,34 +22,45 @@ function slotSearch() {
   var form = document.getElementById('slot-search-form');
 
   // Create an empty dictionary called slotParams
-  var slotParams = {};
-
-  // The for() loop iterates over the elements of the form element. The length property of the form element returns the number of elements in the form.
-  for(var i = 0; i < form.length; i++) {
-    // Handle date params later
-
-    // For each element, the code checks if the element's name starts with the string date-. If it does, the code skips the element.
-
-    // The startsWith() method checks if the string starts with the specified substring. In this case, the substring is date-. If the string does start with the substring, the code skips the element.
-
-    if (form.elements[i].name.startsWith('date-')) { continue; }
-
-    // Otherwise, the code adds the element's name and value to the slotParams dictionary.
+  // var slotParams = {};
+ // for(var i = 0; i < form.length; i++) {
+ //   if (form.elements[i].name.startsWith('date-')) { continue; }
+ //   slotParams[form.elements[i].name] = form.elements[i].value;
+ // }
+//  slotParams['start'] = {$ge: form.elements['date-start'].value, $lt: form.elements['date-end'].value};
+//  FHIR.oauth2.ready(function(smart) {
     
-    slotParams[form.elements[i].name] = form.elements[i].value;
-  }
-  // Appointment start date and appointment end date need to both be set in query parameter 'start'
+    var slotParams = {};
+for (var i = 0; i < form.length; i++) {
+  if (form.elements[i].name.startsWith('date-')) { continue; }
+  slotParams[form.elements[i].name] = form.elements[i].value;
+}
 
-  // The code first gets the date-start and date-end form elements. Then, it creates a JSON object with two properties:
-       // $ge: The greater than or equal operator.
-      // $lt: The less than operator.
-// The value of the $ge property is the value of the date-start form element. The value of the $lt property is the value of the date-end form element.
-      // The code then sets the start parameter of the slotParams dictionary to the JSON object.
-  slotParams['start'] = {$ge: form.elements['date-start'].value, $lt: form.elements['date-end'].value};
+// Get the date strings from the form elements
+var startDate = form.elements['date-start'].value;
+var endDate = form.elements['date-end'].value;
 
+// Convert the date strings to Date objects
+var startDateObj = new Date(startDate);
+var endDateObj = new Date(endDate);
 
-  //FHIR.oauth2.ready(): This function initializes the SMART API and returns a smart object that contains the FHIR client and other resources.
-  FHIR.oauth2.ready(function(smart) {
+// Set the time portion to 12:00:00.000 and convert to UTC
+startDateObj.setUTCHours(12, 0, 0, 0);
+endDateObj.setUTCHours(12, 0, 0, 0);
+
+// Convert the Date objects back to strings in the required format
+var startDateString = startDateObj.toISOString();
+var endDateString = endDateObj.toISOString();
+
+// Set the start and end dates in slotParams
+slotParams['start'] = {$ge: startDateString, $lt: endDateString};
+
+FHIR.oauth2.ready(function(smart) {
+  // Your FHIR OAuth2 logic here
+});
+
+    
+    
     // Query the FHIR server for Slots
 
     // smart.api.fetchAll(): This function queries the FHIR server for slots.
