@@ -83,20 +83,22 @@ FHIR.oauth2.ready(function(smart) {
     );
   });
 }
-
-function slotHTML(id, type, start, end) {
-  console.log('Slot: id:[' + id + '] type:[' + type + '] start:[' + start + '] end:[' + end + ']');
+//changing type to servicetype
+function slotHTML(id, serviceType, start, end) {
+  console.log('Slot: id:[' + id + '] Servicetype:[' + serviceType + '] start:[' + start + '] end:[' + end + ']');
   var slotReference = 'Slot/' + id,
       prettyStart = new Date(start).toISOString(),
       prettyEnd = new Date(end).toISOString();
       
   return "<div class='card'>" +
            "<div class='card-body'>" +
-             "<h5 class='card-title'>" + type + '</h5>' +
+           //changing type to servicetype
+             "<h5 class='card-title'>" + serviceType + '</h5>' +
              "<p class='card-text'>Start: " + prettyStart + '</p>' +
              "<p class='card-text'>End: " + prettyEnd + '</p>' +
              "<a href='javascript:void(0);' class='card-link' onclick='askForPatient(\"" +
-               slotReference + '", "' + type + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
+             //changing type to ServiceType
+               slotReference + '", "' + serviceType + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
            '</div>' +
          '</div>';
 }
