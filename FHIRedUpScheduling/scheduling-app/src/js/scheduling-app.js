@@ -176,7 +176,7 @@ function appointmentJSON(slotReference, patientReference) {
       {
         "text": "I have a cramp"
       }
-    ]
+    ],
     status: 'booked'
   };
 }
