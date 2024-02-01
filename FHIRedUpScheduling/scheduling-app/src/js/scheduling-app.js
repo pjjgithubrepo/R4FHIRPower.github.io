@@ -63,7 +63,7 @@ FHIR.oauth2.ready(function(smart) {
           var slotsHTML = '';
           slots.forEach(function(slot) {
            // below changing slot.type.text to slot.servicetype
-            slotsHTML = slotsHTML + slotHTML(slot.id, slot.servicetype.text, slot.start, slot.end);
+            slotsHTML = slotsHTML + slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end);
           });
 
           renderSlots(slotsHTML);
