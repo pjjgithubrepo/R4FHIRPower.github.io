@@ -172,7 +172,7 @@ function appointmentJSON(slotReference, patientReference) {
         status: 'accepted'
       }
     ],
-    "reasonCode": [
+    reasonCode: [
       {
         "text": "I have a cramp"
       }
