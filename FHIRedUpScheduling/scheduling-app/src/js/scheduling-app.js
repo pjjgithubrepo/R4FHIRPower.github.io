@@ -107,26 +107,12 @@ function slotHTML(id, serviceType, start, end, status) {
 //         '</div>';
 //}
 
-// The code you provided defines two JavaScript functions: renderSlots() and clearUI().
-
-// The renderSlots() function takes an HTML string as its argument and renders it in the browser. The function first calls the clearUI() function to clear the existing UI. Then, the function sets the inner HTML of the #slots element to the value of the slotsHTML argument. Finally, the function shows the #slots-holder-row element.
 
 function renderSlots(slotsHTML) {
   clearUI();
   $('#slots').html(slotsHTML);
   $('#slots-holder-row').show();
 }
-
-// The clearUI() function clears the existing UI by setting the inner HTML of all the elements in the UI to an empty string and hiding all the elements.
-
-//renderSlots(): This function renders the HTML for the slots in the browser.
-//clearUI(): This function clears the existing UI.
-//#slots: This is the ID of the element that will be used to display the slots.
-//#slots-holder-row: This is the ID of the row that contains the #slots element.
-
-// The clearUI() function uses the querySelector() method to get the elements in the UI. The querySelector() method takes a CSS selector as its argument and returns the first element that matches the selector.
-// The clearUI() function uses the innerHTML property to set the inner HTML of an element. The innerHTML property is a read-only property that returns the inner HTML of an element.
-// The show() method is used to show an element. The show() method takes an element as its argument and makes the element visible.
 
 function clearUI() {
   $('#errors').html('');
@@ -186,6 +172,11 @@ function appointmentJSON(slotReference, patientReference) {
         status: 'accepted'
       }
     ],
+    "reasonCode": [
+      {
+        "text": "I have a cramp"
+      }
+    ]
     status: 'booked'
   };
 }
