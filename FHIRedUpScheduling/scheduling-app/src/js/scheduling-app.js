@@ -67,11 +67,12 @@ FHIR.oauth2.ready(function(smart) {
   });
 }
 //changing type to servicetype
-function slotHTML(id, serviceType, start, end) {
-  console.log('Slot: id:[' + id + '] serviceType:[' + serviceType + '] start:[' + start + '] end:[' + end + ']');
+function slotHTML(id, serviceType, start, end, status) {
+  console.log('Slot: id:[' + id + '] serviceType:[' + serviceType + '] start:[' + start + '] end:[' + end + '] status:[' + status + ']');
   var slotReference = 'Slot/' + id,
       prettyStart = new Date(start).toISOString(),
       prettyEnd = new Date(end).toISOString();
+      serviceType =  serviceType
       
   return "<div class='card'>" +
            "<div class='card-body'>" +
