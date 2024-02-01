@@ -36,56 +36,106 @@ var endDateString = endDateObj.toISOString();
 
 slotParams['start'] = {$ge: startDateString, $lt: endDateString};
 
+
 FHIR.oauth2.ready(function(smart) {
-    smart.api.fetchAll({type: 'Slot', query: slotParams}).then(
+  smart.api.fetchAll({type: 'Slot', query: slotParams}).then(
+    function(slots) {
+      if (slots.length) {
+        var slotsHTML = '';
+        slots.forEach(function(slot) {
+          console.log("Slot object:", slot); 
+          // Concatenating text values of all serviceType entries into a single string
+          var serviceTypeText = slot.serviceType.map(function(type) {
+            return type.text;
+          }).join(', ');
+          slotsHTML = slotsHTML + slotHTML(slot.id, serviceTypeText, slot.start, slot.end);
+          console.log("Slots object:", serviceTypeText); 
+        });
 
-      function(slots) {
-        if (slots.length) {
-          var slotsHTML = '';
-          slots.forEach(function(slot) {
-            console.log("Slot object:", slot); 
-           // below changing slot.type.text to slot.servicetype
-            slotsHTML = slotsHTML + slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end);
-            console.log("Slots object:", slot.serviceType.text); 
-          });
+        renderSlots(slotsHTML);
+      }
+      // If no Slots matched the criteria, inform the user
+      else {
+        renderSlots('<p>No Slots ;(</p>');
+      }
+    },
 
-          renderSlots(slotsHTML);
-        }
+    // Display 'Failed to read Slots from FHIR server' if the call failed
+    function() {
+      clearUI();
+      $('#errors').html('<p>Failed to read Slots from FHIR server</p>');
+      $('#errors-row').show();
+    }
+  );
+});
+
+function slotHTML(id, serviceType, start, end, status) {
+console.log('Slot: id:[' + id + '] serviceType:[' + serviceType + '] start:[' + start + '] end:[' + end + '] status:[' + status + ']');
+var slotReference = 'Slot/' + id,
+    prettyStart = new Date(start).toISOString(),
+    prettyEnd = new Date(end).toISOString();
+return "<div class='card'>" +
+         "<div class='card-body'>" +
+           "<h5 class='card-title'>" + serviceType + '</h5>' +
+           "<p class='card-text'>Start: " + prettyStart + '</p>' +
+           "<p class='card-text'>End: " + prettyEnd + '</p>' +
+           "<a href='javascript:void(0);' class='card-link' onclick='askForPatient(\"" +
+             slotReference + '", "' + serviceType + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
+         '</div>' +
+       '</div>';
+}
+
+//Something New 
+// FHIR.oauth2.ready(function(smart) {
+//    smart.api.fetchAll({type: 'Slot', query: slotParams}).then(
+//
+ //     function(slots) {
+//        if (slots.length) {
+//          var slotsHTML = '';
+//          slots.forEach(function(slot) {
+ //           console.log("Slot object:", slot); 
+ //          // below changing slot.type.text to slot.servicetype
+ //           slotsHTML = slotsHTML + slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end);
+ //           console.log("Slots object:", slot.serviceType.text); 
+ //         });
+//
+ //         renderSlots(slotsHTML);
+ //       }
         // If no Slots matched the criteria, inform the user
-        else {
-          renderSlots('<p>No Slots ;(</p>');
-        }
-      },
+  //      else {
+  //        renderSlots('<p>No Slots ;(</p>');
+   //     }
+  //    },
 
       // Display 'Failed to read Slots from FHIR server' if the call failed
-      function() {
-        clearUI();
-        $('#errors').html('<p>Failed to read Slots from FHIR server</p>');
-        $('#errors-row').show();
-      }
-    );
-  });
-}
+ //     function() {
+ //       clearUI();
+  //      $('#errors').html('<p>Failed to read Slots from FHIR server</p>');
+ //       $('#errors-row').show();
+ //     }
+//    );
+ // });
+// }
 //changing type to servicetype
-function slotHTML(id, serviceType, start, end, status) {
-  console.log('Slot: id:[' + id + '] serviceType:[' + serviceType + '] start:[' + start + '] end:[' + end + '] status:[' + status + ']');
-  var slotReference = 'Slot/' + id,
-      prettyStart = new Date(start).toISOString(),
-      prettyEnd = new Date(end).toISOString();
-      serviceType =  serviceType
+// function slotHTML(id, serviceType, start, end, status) {
+ // console.log('Slot: id:[' + id + '] serviceType:[' + serviceType.text + '] start:[' + start + '] end:[' + end + '] status:[' + status + ']');
+//  var slotReference = 'Slot/' + id,
+ //     prettyStart = new Date(start).toISOString(),
+ //     prettyEnd = new Date(end).toISOString();
+ //     serviceType =  serviceType
       
-  return "<div class='card'>" +
-           "<div class='card-body'>" +
+//  return "<div class='card'>" +
+ //          "<div class='card-body'>" +
            //changing type to servicetype
-             "<h5 class='card-title'>" + serviceType + '</h5>' +
-             "<p class='card-text'>Start: " + prettyStart + '</p>' +
-             "<p class='card-text'>End: " + prettyEnd + '</p>' +
-             "<a href='javascript:void(0);' class='card-link' onclick='askForPatient(\"" +
+ //            "<h5 class='card-title'>" + serviceType + '</h5>' +
+ //            "<p class='card-text'>Start: " + prettyStart + '</p>' +
+ //            "<p class='card-text'>End: " + prettyEnd + '</p>' +
+  //           "<a href='javascript:void(0);' class='card-link' onclick='askForPatient(\"" +
              //changing type to ServiceType
-               slotReference + '", "' + serviceType + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
-           '</div>' +
-         '</div>';
-}
+ //              slotReference + '", "' + serviceType + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
+//           '</div>' +
+//         '</div>';
+// }
 
 
 
