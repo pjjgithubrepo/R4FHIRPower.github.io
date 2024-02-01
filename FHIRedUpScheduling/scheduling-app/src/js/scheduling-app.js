@@ -408,4 +408,5 @@ function clearPatientUI() {
   $('#patient-loading-row').hide();
   $('#patients').html('');
   $('#patients-holder-row').hide();
-}
+} 
+
