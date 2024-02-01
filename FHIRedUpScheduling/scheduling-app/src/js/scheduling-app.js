@@ -1,11 +1,9 @@
-// listens for the event of slot search form being submitted
 
 $('#slot-search-form').on('submit', function(e) {
   e.preventDefault();
   slotSearch();
 });
 
-// listens for the event of clear slots button, clears contents of the slots element in html and hides slots holder row
 
 $('#clear-slots').on('click', function(e) {
   $('#slots').html('');
@@ -16,19 +14,7 @@ function slotSearch() {
   clearUI();
   $('#loading-row').show();
 
-  // Next, the code loops through the elements of the form.  
-
-  // Grab Slot query parameters from the slot-search-form
   var form = document.getElementById('slot-search-form');
-
-  // Create an empty dictionary called slotParams
-  // var slotParams = {};
- // for(var i = 0; i < form.length; i++) {
- //   if (form.elements[i].name.startsWith('date-')) { continue; }
- //   slotParams[form.elements[i].name] = form.elements[i].value;
- // }
-//  slotParams['start'] = {$ge: form.elements['date-start'].value, $lt: form.elements['date-end'].value};
-//  FHIR.oauth2.ready(function(smart) {
     
     var slotParams = {};
 for (var i = 0; i < form.length; i++) {
@@ -36,23 +22,18 @@ for (var i = 0; i < form.length; i++) {
   slotParams[form.elements[i].name] = form.elements[i].value;
 }
 
-// Get the date strings from the form elements
 var startDate = form.elements['date-start'].value;
 var endDate = form.elements['date-end'].value;
 
-// Convert the date strings to Date objects
 var startDateObj = new Date(startDate);
 var endDateObj = new Date(endDate);
 
-// Set the time portion to 12:00:00.000 and convert to UTC
 startDateObj.setUTCHours(12, 0, 0, 0);
 endDateObj.setUTCHours(12, 0, 0, 0);
 
-// Convert the Date objects back to strings in the required format
 var startDateString = startDateObj.toISOString();
 var endDateString = endDateObj.toISOString();
 
-// Set the start and end dates in slotParams
 slotParams['start'] = {$ge: startDateString, $lt: endDateString};
 
 FHIR.oauth2.ready(function(smart) {
@@ -65,6 +46,7 @@ FHIR.oauth2.ready(function(smart) {
             console.log("Slot object:", slot); 
            // below changing slot.type.text to slot.servicetype
             slotsHTML = slotsHTML + slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end);
+            console.log("Slots object:", slot.serviceType.text); 
           });
 
           renderSlots(slotsHTML);
