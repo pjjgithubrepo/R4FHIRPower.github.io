@@ -46,12 +46,13 @@ FHIR.oauth2.ready(function(smart) {
            // below changing slot.type.text to slot.servicetype
            //New 
 // get the serviceType text value
-var serviceTypeText = slot.serviceType.text;
+// get the serviceType text value
+var serviceTypeText = slot.serviceType ? slot.serviceType.text : null;
 // get the first coding object from the serviceType coding array
-var serviceTypeCoding = slot.serviceType.coding[0];
+var serviceTypeCoding = slot.serviceType && slot.serviceType.coding ? slot.serviceType.coding[0] : null;
 // get the code and display values from the coding object
-var serviceTypeCode = serviceTypeCoding.code;
-var serviceTypeDisplay = serviceTypeCoding.display;
+var serviceTypeCode = serviceTypeCoding ? serviceTypeCoding.code : null;
+var serviceTypeDisplay = serviceTypeCoding ? serviceTypeCoding.display : null;
 // use the values to create the HTML
 slotsHTML = slotsHTML + slotHTML(slot.id, serviceTypeText, serviceTypeCode, serviceTypeDisplay, slot.start, slot.end);
 
