@@ -44,7 +44,18 @@ FHIR.oauth2.ready(function(smart) {
           slots.forEach(function(slot) {
             console.log("Slot object:", slot); 
            // below changing slot.type.text to slot.servicetype
-            slotsHTML = slotsHTML + slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end);
+           //New 
+// get the serviceType text value
+var serviceTypeText = slot.serviceType.text;
+// get the first coding object from the serviceType coding array
+var serviceTypeCoding = slot.serviceType.coding[0];
+// get the code and display values from the coding object
+var serviceTypeCode = serviceTypeCoding.code;
+var serviceTypeDisplay = serviceTypeCoding.display;
+// use the values to create the HTML
+slotsHTML = slotsHTML + slotHTML(slot.id, serviceTypeText, serviceTypeCode, serviceTypeDisplay, slot.start, slot.end);
+
+ //           slotsHTML = slotsHTML + slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end);
             console.log("Slots object:", slotHTML); 
           });
 
@@ -67,7 +78,7 @@ FHIR.oauth2.ready(function(smart) {
 }
 //changing type to servicetype
 function slotHTML(id, serviceType, start, end, status) {
-  console.log('Slot: id:[' + id + '] serviceType:[' + serviceType + '] start:[' + start + '] end:[' + end + '] status:[' + status + ']');
+  console.log('Slot: id:[' + id + '] serviceType:[' + serviceTypeText + '] start:[' + start + '] end:[' + end + '] status:[' + status + ']');
   var slotReference = 'Slot/' + id,
       prettyStart = new Date(start).toISOString(),
       prettyEnd = new Date(end).toISOString();
