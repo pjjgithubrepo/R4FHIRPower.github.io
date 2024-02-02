@@ -60,7 +60,7 @@ FHIR.oauth2.ready(function(smart) {
     }
   );
 });
-
+}
 // this is the function that you provided, with one line removed
 function slotHTML(id, serviceTypeText, serviceTypeCode, serviceTypeDisplay, start, end) {
 console.log('Slot: id:[' + id + '] serviceType:[' + serviceTypeText + '] start:[' + start + '] end:[' + end + ']');
