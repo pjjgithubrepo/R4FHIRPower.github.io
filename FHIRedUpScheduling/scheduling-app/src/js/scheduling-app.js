@@ -53,6 +53,7 @@ FHIR.oauth2.ready(function(smart) {
           // use the variables as the parameters of the slotHTML function
           slotsHTML = slotsHTML + slotHTML(slot.id, serviceTypeText, serviceTypeCode, serviceTypeDisplay, slot.start, slot.end);
           console.log("Slots object:", slotHTML); 
+          console.log("Slots htm:", slotsHTML); 
         });
 
         renderSlots(slotsHTML);
@@ -62,19 +63,19 @@ FHIR.oauth2.ready(function(smart) {
 });
 }
 // this is the function that you provided, with one line removed
-function slotHTML(id, serviceTypeText, serviceTypeCode, serviceTypeDisplay, start, end) {
-console.log('Slot: id:[' + id + '] serviceType:[' + serviceTypeText + '] start:[' + start + '] end:[' + end + ']');
+function slotHTML(id, serviceTypeText, serviceTypeCode, serviceTypeDisplay, start, end, type) {
+console.log('Slot: id:[' + id + '] serviceTypeText:[' + serviceTypeText + '] start:[' + start + '] end:[' + end + '] type:[' + type + ']');
 var slotReference = 'Slot/' + id,
     prettyStart = new Date(start).toISOString(),
     prettyEnd = new Date(end).toISOString();
     
 return "<div class='card'>" +
          "<div class='card-body'>" +
-           "<h5 class='card-title'>" + serviceTypeText + '</h5>' +
+           "<h5 class='card-title'>" + type + '</h5>' +
            "<p class='card-text'>Start: " + prettyStart + '</p>' +
            "<p class='card-text'>End: " + prettyEnd + '</p>' +
            "<a href='javascript:void(0);' class='card-link' onclick='askForPatient(\"" +
-             slotReference + '", "' + serviceTypeText + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
+             slotReference + '", "' + type + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
          '</div>' +
        '</div>';
 }
