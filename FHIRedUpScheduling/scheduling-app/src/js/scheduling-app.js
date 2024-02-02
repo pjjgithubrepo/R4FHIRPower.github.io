@@ -36,56 +36,57 @@ var endDateString = endDateObj.toISOString();
 
 slotParams['start'] = {$ge: startDateString, $lt: endDateString};
 
+//Something New 
 FHIR.oauth2.ready(function(smart) {
-    smart.api.fetchAll({type: 'Slot', query: slotParams}).then(
+   smart.api.fetchAll({type: 'Slot', query: slotParams}).then(
 
-      function(slots) {
-        if (slots.length) {
+    function(slots) {
+       if (slots.length) {
           var slotsHTML = '';
-          slots.forEach(function(slot) {
-            console.log("Slot object:", slot); 
-           // below changing slot.type.text to slot.servicetype
-            slotsHTML = slotsHTML + slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end);
-            console.log("Slots object:", slot.serviceType.text); 
-          });
+         slots.forEach(function(slot) {
+         console.log("Slot object:", slot); 
+         // below changing slot.type.text to slot.servicetype
+           slotsHTML = slotsHTML + slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end);
 
-          renderSlots(slotsHTML);
-        }
+         });
+
+        renderSlots(slotsHTML);
+      }
         // If no Slots matched the criteria, inform the user
         else {
-          renderSlots('<p>No Slots ;(</p>');
-        }
-      },
+        renderSlots('<p>No Slots ;(</p>');
+     }
+     },
 
       // Display 'Failed to read Slots from FHIR server' if the call failed
       function() {
         clearUI();
-        $('#errors').html('<p>Failed to read Slots from FHIR server</p>');
-        $('#errors-row').show();
+      $('#errors').html('<p>Failed to read Slots from FHIR server</p>');
+       $('#errors-row').show();
       }
-    );
+   );
   });
-}
+ }
 //changing type to servicetype
-function slotHTML(id, serviceType, start, end, status) {
-  console.log('Slot: id:[' + id + '] serviceType:[' + serviceType + '] start:[' + start + '] end:[' + end + '] status:[' + status + ']');
-  var slotReference = 'Slot/' + id,
-      prettyStart = new Date(start).toISOString(),
-      prettyEnd = new Date(end).toISOString();
-      serviceType =  serviceType
+ function slotHTML(id, serviceType, start, end, status) {
+  console.log('Slot: id:[' + id + '] serviceType:[' + serviceType.text + '] start:[' + start + '] end:[' + end + '] status:[' + status + ']');
+ var slotReference = 'Slot/' + id,
+    prettyStart = new Date(start).toISOString(),
+    prettyEnd = new Date(end).toISOString();
+    serviceType =  serviceType
       
   return "<div class='card'>" +
-           "<div class='card-body'>" +
+        "<div class='card-body'>" +
            //changing type to servicetype
-             "<h5 class='card-title'>" + serviceType + '</h5>' +
-             "<p class='card-text'>Start: " + prettyStart + '</p>' +
-             "<p class='card-text'>End: " + prettyEnd + '</p>' +
+           "<h5 class='card-title'>" + serviceType + '</h5>' +
+           "<p class='card-text'>Start: " + prettyStart + '</p>' +
+           "<p class='card-text'>End: " + prettyEnd + '</p>' +
              "<a href='javascript:void(0);' class='card-link' onclick='askForPatient(\"" +
              //changing type to ServiceType
-               slotReference + '", "' + serviceType + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
-           '</div>' +
+              slotReference + '", "' + serviceType + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
+          '</div>' +
          '</div>';
-}
+ }
 
 
 
@@ -279,7 +280,6 @@ function patientCreate() {
   var patientBody = patientJSON(
     form.elements['patient-create-firstname'].value,
     form.elements['patient-create-middlename'].value,
-    form.elements['patient-create-city'].value,
     form.elements['patient-create-lastname'].value,
     form.elements['patient-create-phone'].value,
     form.elements['patient-create-male'].checked ? 'male' : 'female',
@@ -358,4 +358,5 @@ function clearPatientUI() {
   $('#patient-loading-row').hide();
   $('#patients').html('');
   $('#patients-holder-row').hide();
-}
+} 
+
