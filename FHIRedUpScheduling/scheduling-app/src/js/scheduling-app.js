@@ -280,7 +280,6 @@ function patientCreate() {
   var patientBody = patientJSON(
     form.elements['patient-create-firstname'].value,
     form.elements['patient-create-middlename'].value,
-    form.elements['patient-create-city'].value,
     form.elements['patient-create-lastname'].value,
     form.elements['patient-create-phone'].value,
     form.elements['patient-create-male'].checked ? 'male' : 'female',
