@@ -36,66 +36,47 @@ var endDateString = endDateObj.toISOString();
 slotParams['start'] = {$ge: startDateString, $lt: endDateString};
 
 FHIR.oauth2.ready(function(smart) {
-    smart.api.fetchAll({type: 'Slot', query: slotParams}).then(
+  smart.api.fetchAll({type: 'Slot', query: slotParams}).then(
 
-      function(slots) {
-        if (slots.length) {
-          var slotsHTML = '';
-          slots.forEach(function(slot) {
-            console.log("Slot object:", slot); 
-           // below changing slot.type.text to slot.servicetype
-           //New 
-// get the serviceType text value
-// get the serviceType text value
-var serviceTypeText = slot.serviceType ? slot.serviceType.text : null;
-// get the first coding object from the serviceType coding array
-var serviceTypeCoding = slot.serviceType && slot.serviceType.coding ? slot.serviceType.coding[0] : null;
-// get the code and display values from the coding object
-var serviceTypeCode = serviceTypeCoding ? serviceTypeCoding.code : null;
-var serviceTypeDisplay = serviceTypeCoding ? serviceTypeCoding.display : null;
-// use the values to create the HTML
-slotsHTML = slotsHTML + slotHTML(slot.id, serviceTypeText, serviceTypeCode, serviceTypeDisplay, slot.start, slot.end);
+    function(slots) {
+      if (slots.length) {
+        var slotsHTML = '';
+        slots.forEach(function(slot) {
+          console.log("Slot object:", slot); 
+          // get the serviceType text value
+          var serviceTypeText = slot.serviceType ? slot.serviceType.text : null;
+          // get the first coding object from the serviceType coding array
+          var serviceTypeCoding = slot.serviceType && slot.serviceType.coding ? slot.serviceType.coding[0] : null;
+          // get the code and display values from the coding object
+          var serviceTypeCode = serviceTypeCoding ? serviceTypeCoding.code : null;
+          var serviceTypeDisplay = serviceTypeCoding ? serviceTypeCoding.display : null;
+          // use the variables as the parameters of the slotHTML function
+          slotsHTML = slotsHTML + slotHTML(slot.id, serviceTypeText, serviceTypeCode, serviceTypeDisplay, slot.start, slot.end);
+          console.log("Slots object:", slotHTML); 
+        });
 
- //           slotsHTML = slotsHTML + slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end);
-            console.log("Slots object:", slotHTML); 
-          });
-
-          renderSlots(slotsHTML);
-        }
-        // If no Slots matched the criteria, inform the user
-        else {
-          renderSlots('<p>No Slots ;(</p>');
-        }
-      },
-
-      // Display 'Failed to read Slots from FHIR server' if the call failed
-      function() {
-        clearUI();
-        $('#errors').html('<p>Failed to read Slots from FHIR server</p>');
-        $('#errors-row').show();
+        renderSlots(slotsHTML);
       }
-    );
-  });
-}
-//changing type to servicetype
-function slotHTML(id, serviceType, start, end, status) {
-  console.log('Slot: id:[' + id + '] serviceType:[' + serviceTypeText + '] start:[' + start + '] end:[' + end + '] status:[' + status + ']');
-  var slotReference = 'Slot/' + id,
-      prettyStart = new Date(start).toISOString(),
-      prettyEnd = new Date(end).toISOString();
-      serviceType =  serviceType
-      
-  return "<div class='card'>" +
-           "<div class='card-body'>" +
-           //changing type to servicetype
-             "<h5 class='card-title'>" + serviceType + '</h5>' +
-             "<p class='card-text'>Start: " + prettyStart + '</p>' +
-             "<p class='card-text'>End: " + prettyEnd + '</p>' +
-             "<a href='javascript:void(0);' class='card-link' onclick='askForPatient(\"" +
-             //changing type to ServiceType
-               slotReference + '", "' + serviceType + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
-           '</div>' +
-         '</div>';
+    }
+  );
+});
+
+// this is the function that you provided, with one line removed
+function slotHTML(id, serviceTypeText, serviceTypeCode, serviceTypeDisplay, start, end) {
+console.log('Slot: id:[' + id + '] serviceType:[' + serviceTypeText + '] start:[' + start + '] end:[' + end + ']');
+var slotReference = 'Slot/' + id,
+    prettyStart = new Date(start).toISOString(),
+    prettyEnd = new Date(end).toISOString();
+    
+return "<div class='card'>" +
+         "<div class='card-body'>" +
+           "<h5 class='card-title'>" + serviceTypeText + '</h5>' +
+           "<p class='card-text'>Start: " + prettyStart + '</p>' +
+           "<p class='card-text'>End: " + prettyEnd + '</p>' +
+           "<a href='javascript:void(0);' class='card-link' onclick='askForPatient(\"" +
+             slotReference + '", "' + serviceTypeText + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
+         '</div>' +
+       '</div>';
 }
 
 
