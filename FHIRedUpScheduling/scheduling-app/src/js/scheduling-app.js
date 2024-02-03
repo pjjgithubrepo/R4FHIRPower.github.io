@@ -16,7 +16,7 @@ function slotSearch() {
   var form = document.getElementById('slot-search-form');
   //The two below are new
   var serviceTypeValue = form.elements["service-type"].value;
-  var serviceTypeText = serviceTypeValue.split("|")[1];
+  var serviceTypeText = serviceTypeValue.split("|")[0].split("/").pop();
   console.log("Selected Slot Type: " + serviceTypeText);
   // 
 
