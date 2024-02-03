@@ -372,11 +372,11 @@ function patientJSON(firstName, middleName, lastName, phone, gender, birthDate) 
       {
         use: 'official',
         family: [
-          lastName
+          "lastName"
         ],
         given: [
-          firstName,
-          middleName
+          "firstName",
+          "middleName"
         ],
         period: {
           start: periodStart
