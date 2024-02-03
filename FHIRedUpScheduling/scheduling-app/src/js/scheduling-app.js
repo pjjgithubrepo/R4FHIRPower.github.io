@@ -317,6 +317,10 @@ function patientCreate() {
 
 function patientJSON(firstName, middleName, lastName, phone, gender, birthDate) {
   var periodStart = new Date().toISOString();
+  var form = document.getElementById('patient-create-form');
+  var startDate = form.elements['date-start'].value;
+  var endDate = form.elements['date-end'].value;
+
 
   return {
     resourceType: 'Patient',
@@ -372,27 +376,27 @@ function patientJSON(firstName, middleName, lastName, phone, gender, birthDate) 
       {
         use: 'official',
         family: [
-          "lastName"
+          "John"
         ],
         given: [
-          "firstName",
-          "middleName"
+          "Richard",
+          "Brown"
         ],
         period: {
           start: periodStart
         }
       }
     ],
-    telecom: [
-      {
-        system: 'phone',
-        value: phone,
-        use: 'home'
-      }
-    ],
+    //telecom: [
+    //  {
+    //    system: 'phone',
+    //    value: phone,
+    //    use: 'home'
+    //  }
+    //],
     gender: gender,
     birthDate: birthDate,
-    "address": [
+    address: [
       {
         "use": "home",
         "line": [
