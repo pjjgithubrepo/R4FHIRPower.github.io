@@ -19,9 +19,10 @@ function slotSearch() {
  var selectedSlotType = ""
  var selectedOption = form.elements["service-type"].selectedOptions[0];
  var selectedSlotType = selectedOption.textContent;
+ console.log("Selected Slot Type: " + selectedSlotType);
 // var selectedOption = form.elements["service-type"].selectedOptions[0];
  //var serviceTypeText = selectedOption.textContent;
- console.log("Selected Slot Type: " + selectedSlotType);
+ 
   // 
 
     var slotParams = {};
@@ -77,7 +78,14 @@ console.log('Slot: id:[' + id + '] serviceTypeText:[' + serviceTypeText + '] sta
 var slotReference = 'Slot/' + id,
     prettyStart = new Date(start).toISOString(),
     prettyEnd = new Date(end).toISOString();
-    
+  
+ //The two below are new
+ var form = document.getElementById('slot-search-form');
+ var selectedSlotType = ""
+ var selectedOption = form.elements["service-type"].selectedOptions[0];
+ var selectedSlotType = selectedOption.textContent;
+
+ console.log("Selected Slot Type: " + selectedSlotType);
 return "<div class='card'>" +
          "<div class='card-body'>" +
            "<h5 class='card-title'>" + selectedSlotType + '</h5>' +
