@@ -294,7 +294,7 @@ function patientCreate() {
     form.elements['patient-create-male'].checked ? 'male' : 'female',
     form.elements['patient-create-birthdate'].value
   );
-
+  console.log("patientbody: " + patientBody);
   // FHIR.oauth2.ready handles refreshing access tokens
   FHIR.oauth2.ready(function(smart) {
     smart.api.create({resource: patientBody}).then(
