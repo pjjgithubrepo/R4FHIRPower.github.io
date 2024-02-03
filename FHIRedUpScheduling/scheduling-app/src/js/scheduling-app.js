@@ -14,7 +14,12 @@ function slotSearch() {
   $('#loading-row').show();
 
   var form = document.getElementById('slot-search-form');
-    
+  //The two below are new
+  var serviceTypeValue = form.elements["service-type"].value;
+  var serviceTypeText = serviceTypeValue.split("|")[1];
+  console.log("Selected Slot Type: " + serviceTypeText);
+  // 
+
     var slotParams = {};
 for (var i = 0; i < form.length; i++) {
   if (form.elements[i].name.startsWith('date-')) { continue; }
