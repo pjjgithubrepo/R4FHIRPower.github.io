@@ -320,6 +320,46 @@ function patientJSON(firstName, middleName, lastName, phone, gender, birthDate) 
 
   return {
     resourceType: 'Patient',
+    "extension": [
+      {
+        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
+        "valueCode": "M"
+      },
+      {
+        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+        "extension": [
+          {
+            "url": "ombCategory",
+            "valueCoding": {
+              "system": "urn:oid:2.16.840.1.113883.6.238",
+              "code": "2028-9",
+              "display": "Asian"
+            }
+          },
+          {
+            "url": "detailed",
+            "valueCoding": {
+              "system": "urn:oid:2.16.840.1.113883.6.238",
+              "code": "2039-6",
+              "display": "Japanese"
+            }
+          }
+        ]
+      },
+      {
+        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+        "extension": [
+          {
+            "url": "ombCategory",
+            "valueCoding": {
+              "system": "urn:oid:2.16.840.1.113883.6.238",
+              "code": "2186-5",
+              "display": "Non Hispanic or Latino"
+            }
+          }
+        ]
+      }
+    ],
     identifier: [
       {
         assigner: {
@@ -351,7 +391,54 @@ function patientJSON(firstName, middleName, lastName, phone, gender, birthDate) 
       }
     ],
     gender: gender,
-    birthDate: birthDate
+    birthDate: birthDate,
+    "address": [
+      {
+        "use": "home",
+        "line": [
+          "121212 Metcalf Drive",
+          "Apartment 403"
+        ],
+        "city": "Kansas City",
+        "district": "Jackson",
+        "state": "KS",
+        "postalCode": "64199",
+        "country": "United States of America",
+        "period": {
+          "start": "2012-05-17T15:33:18.000Z"
+        }
+      }
+    ],
+    "maritalStatus": {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+          "code": "UNK",
+          "display": "Unknown"
+        }
+      ],
+      "text": "Unknown"
+    },
+    "communication": [
+      {
+        "language": {
+          "coding": [
+            {
+              "system": "urn:ietf:bcp:47",
+              "code": "en",
+              "display": "English"
+            }
+          ],
+          "text": "English"
+        },
+        "preferred": true
+      }
+    ],
+    "generalPractitioner": [
+      {
+        "reference": "Practitioner/593923"
+      }
+    ]
   };
 }
 
