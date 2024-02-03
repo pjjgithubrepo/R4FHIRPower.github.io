@@ -372,18 +372,25 @@ function patientJSON(firstName, middleName, lastName, phone, gender, birthDate) 
       }
     ],
     active: true,
-    name: [
+    "name": [
       {
-        use: 'official',
-        family: [
-          "John"
+        "use": "official",
+        "family": "RogersSmith",
+        "given": [
+          "Randy",
+          "Ron"
         ],
-        given: [
-          "Richard",
-          "Brown"
+        "period": {
+          "start": "periodStart"
+        }
+      },
+      {
+        "use": "official",
+        "given": [
+          "Ron"
         ],
-        period: {
-          start: periodStart
+        "period": {
+          "start": "2012-05-22T15:45:50.000Z"
         }
       }
     ],
