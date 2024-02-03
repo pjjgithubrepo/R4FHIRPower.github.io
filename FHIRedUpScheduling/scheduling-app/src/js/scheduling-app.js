@@ -381,7 +381,7 @@ function patientJSON(firstName, middleName, lastName, phone, gender, birthDate) 
           "Ron"
         ],
         "period": {
-          "start": "periodStart"
+          "start": "2012-05-22T15:45:50.000Z"
         }
       },
       {
@@ -401,7 +401,7 @@ function patientJSON(firstName, middleName, lastName, phone, gender, birthDate) 
     //    use: 'home'
     //  }
     //],
-    gender: gender,
+    gender: "male",
     birthDate: birthDate,
     address: [
       {
