@@ -318,9 +318,9 @@ function patientCreate() {
 function patientJSON(firstName, middleName, lastName, phone, gender, birthDate) {
   var periodStart = new Date().toISOString();
   var form = document.getElementById('patient-create-form');
-  var startDate = form.elements['date-start'].value;
-  var endDate = form.elements['date-end'].value;
-
+  var firstname = form.elements['patient-create-firstname'].value;
+  var lastName = form.elements['patient-create-lastname'].value;
+  console.log("lastname: " + lastname);
 
   return {
     resourceType: 'Patient',
