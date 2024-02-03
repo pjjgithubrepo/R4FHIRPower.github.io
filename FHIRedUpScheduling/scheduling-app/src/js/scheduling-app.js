@@ -217,7 +217,7 @@ function askForPatient(slotReference, type, start, end) {
   $('#patient-search-create-row').show();
 
   $('#patient-search-create-info').html(
-    '<p>To book Appointment [' + type + '] on ' + new Date(start).toLocaleDateString() +
+    '<p>To book Appointment [' + selectedSlotType + '] on ' + new Date(start).toLocaleDateString() +
     ' at ' + new Date(start).toLocaleTimeString() + ' - ' + new Date(end).toLocaleTimeString() +
     ', select a Patient.</p>'
   );
