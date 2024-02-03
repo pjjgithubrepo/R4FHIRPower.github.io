@@ -78,7 +78,7 @@ var slotReference = 'Slot/' + id,
     
 return "<div class='card'>" +
          "<div class='card-body'>" +
-           "<h5 class='card-title'>" + type + '</h5>' +
+           "<h5 class='card-title'>" + serviceTypeText + '</h5>' +
            "<p class='card-text'>Start: " + prettyStart + '</p>' +
            "<p class='card-text'>End: " + prettyEnd + '</p>' +
            "<a href='javascript:void(0);' class='card-link' onclick='askForPatient(\"" +
