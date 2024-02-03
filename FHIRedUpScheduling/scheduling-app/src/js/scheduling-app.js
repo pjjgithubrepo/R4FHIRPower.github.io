@@ -15,11 +15,13 @@ function slotSearch() {
 
   var form = document.getElementById('slot-search-form');
   //The two below are new
- // var serviceTypeValue = form.elements["service-type"].value;
- // var serviceTypeText = serviceTypeValue.split("|")[0].split("/").pop();
+ 
+ var selectedSlotType = ""
  var selectedOption = form.elements["service-type"].selectedOptions[0];
- var serviceTypeText = selectedOption.textContent;
-  console.log("Selected Slot Type: " + serviceTypeText);
+ var selectedSlotType = selectedOption.textContent;
+// var selectedOption = form.elements["service-type"].selectedOptions[0];
+ //var serviceTypeText = selectedOption.textContent;
+ console.log("Selected Slot Type: " + selectedSlotType);
   // 
 
     var slotParams = {};
@@ -78,7 +80,7 @@ var slotReference = 'Slot/' + id,
     
 return "<div class='card'>" +
          "<div class='card-body'>" +
-           "<h5 class='card-title'>" + serviceTypeText + '</h5>' +
+           "<h5 class='card-title'>" + selectedSlotType + '</h5>' +
            "<p class='card-text'>Start: " + prettyStart + '</p>' +
            "<p class='card-text'>End: " + prettyEnd + '</p>' +
            "<a href='javascript:void(0);' class='card-link' onclick='askForPatient(\"" +
