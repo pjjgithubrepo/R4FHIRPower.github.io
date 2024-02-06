@@ -207,16 +207,6 @@ $('#patient-create-form').on('submit', function(e) {
   patientCreate();
 });
 
-
-// New Code 
-$('#patient-insurance-form').on('submit', function(e) {
-  e.preventDefault();
-  patientInsurance();
-});
-// New Code
-
-
-
 $('#clear-patients').on('click', function(e) {
   $('#patients').html('');
   $('#patients-holder-row').hide();
