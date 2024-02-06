@@ -14,17 +14,7 @@ function slotSearch() {
   $('#loading-row').show();
 
   var form = document.getElementById('slot-search-form');
-  //The two below are new
- 
- var selectedSlotType = ""
- var selectedOption = form.elements["service-type"].selectedOptions[0];
- var selectedSlotType = selectedOption.textContent;
- console.log("Selected Slot Type: " + selectedSlotType);
-// var selectedOption = form.elements["service-type"].selectedOptions[0];
- //var serviceTypeText = selectedOption.textContent;
- 
-  // 
-
+    
     var slotParams = {};
 for (var i = 0; i < form.length; i++) {
   if (form.elements[i].name.startsWith('date-')) { continue; }
@@ -46,55 +36,54 @@ var endDateString = endDateObj.toISOString();
 slotParams['start'] = {$ge: startDateString, $lt: endDateString};
 
 FHIR.oauth2.ready(function(smart) {
-  smart.api.fetchAll({type: 'Slot', query: slotParams}).then(
+    smart.api.fetchAll({type: 'Slot', query: slotParams}).then(
 
-    function(slots) {
-      if (slots.length) {
-        var slotsHTML = '';
-        slots.forEach(function(slot) {
-          console.log("Slot object:", slot); 
-          // get the serviceType text value
-          var serviceTypeText = slot.serviceType ? slot.serviceType.text : null;
-          // get the first coding object from the serviceType coding array
-          var serviceTypeCoding = slot.serviceType && slot.serviceType.coding ? slot.serviceType.coding[0] : null;
-          // get the code and display values from the coding object
-          var serviceTypeCode = serviceTypeCoding ? serviceTypeCoding.code : null;
-          var serviceTypeDisplay = serviceTypeCoding ? serviceTypeCoding.display : null;
-          // use the variables as the parameters of the slotHTML function
-          slotsHTML = slotsHTML + slotHTML(slot.id, serviceTypeText, serviceTypeCode, serviceTypeDisplay, slot.start, slot.end);
-          console.log("Slots object:", slotHTML); 
-          console.log("Slots htm:", slotsHTML); 
-        });
+      function(slots) {
+        if (slots.length) {
+          var slotsHTML = '';
+          slots.forEach(function(slot) {
+            console.log("Slot object:", slot); 
+           // below changing slot.type.text to slot.servicetype
+            slotsHTML = slotsHTML + slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end);
+            console.log("Slots object:", slotsHTML); 
+          });
 
-        renderSlots(slotsHTML);
+          renderSlots(slotsHTML);
+        }
+        // If no Slots matched the criteria, inform the user
+        else {
+          renderSlots('<p>No Slots ;(</p>');
+        }
+      },
+
+      // Display 'Failed to read Slots from FHIR server' if the call failed
+      function() {
+        clearUI();
+        $('#errors').html('<p>Failed to read Slots from FHIR server</p>');
+        $('#errors-row').show();
       }
-    }
-  );
-});
+    );
+  });
 }
-// this is the function that you provided, with one line removed
-function slotHTML(id, serviceTypeText, serviceTypeCode, serviceTypeDisplay, start, end, type) {
-console.log('Slot: id:[' + id + '] serviceTypeText:[' + serviceTypeText + '] start:[' + start + '] end:[' + end + '] type:[' + type + ']');
-var slotReference = 'Slot/' + id,
-    prettyStart = new Date(start).toISOString(),
-    prettyEnd = new Date(end).toISOString();
-  
- //The two below are new
- var form = document.getElementById('slot-search-form');
- var selectedSlotType = ""
- var selectedOption = form.elements["service-type"].selectedOptions[0];
- var selectedSlotType = selectedOption.textContent;
-
- console.log("Selected Slot Type: " + selectedSlotType);
-return "<div class='card'>" +
-         "<div class='card-body'>" +
-           "<h5 class='card-title'>" + selectedSlotType + '</h5>' +
-           "<p class='card-text'>Start: " + prettyStart + '</p>' +
-           "<p class='card-text'>End: " + prettyEnd + '</p>' +
-           "<a href='javascript:void(0);' class='card-link' onclick='askForPatient(\"" +
-             slotReference + '", "' + type + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
-         '</div>' +
-       '</div>';
+//changing type to servicetype
+function slotHTML(id, serviceType, start, end, status) {
+  console.log('Slot: id:[' + id + '] serviceType:[' + serviceType + '] start:[' + start + '] end:[' + end + '] status:[' + status + ']');
+  var slotReference = 'Slot/' + id,
+      prettyStart = new Date(start).toISOString(),
+      prettyEnd = new Date(end).toISOString();
+      serviceType =  serviceType
+      
+  return "<div class='card'>" +
+           "<div class='card-body'>" +
+           //changing type to servicetype
+             "<h5 class='card-title'>" + serviceType + '</h5>' +
+             "<p class='card-text'>Start: " + prettyStart + '</p>' +
+             "<p class='card-text'>End: " + prettyEnd + '</p>' +
+             "<a href='javascript:void(0);' class='card-link' onclick='askForPatient(\"" +
+             //changing type to ServiceType
+               slotReference + '", "' + serviceType + '", "' + prettyStart + '", "' + prettyEnd + "\");'>Book</a>" +
+           '</div>' +
+         '</div>';
 }
 
 
@@ -217,7 +206,7 @@ function askForPatient(slotReference, type, start, end) {
   $('#patient-search-create-row').show();
 
   $('#patient-search-create-info').html(
-    '<p>To book Appointment [' + selectedSlotType + '] on ' + new Date(start).toLocaleDateString() +
+    '<p>To book Appointment [' + type + '] on ' + new Date(start).toLocaleDateString() +
     ' at ' + new Date(start).toLocaleTimeString() + ' - ' + new Date(end).toLocaleTimeString() +
     ', select a Patient.</p>'
   );
@@ -294,7 +283,7 @@ function patientCreate() {
     form.elements['patient-create-male'].checked ? 'male' : 'female',
     form.elements['patient-create-birthdate'].value
   );
-  console.log("patientbody: " + patientBody);
+
   // FHIR.oauth2.ready handles refreshing access tokens
   FHIR.oauth2.ready(function(smart) {
     smart.api.create({resource: patientBody}).then(
@@ -317,53 +306,9 @@ function patientCreate() {
 
 function patientJSON(firstName, middleName, lastName, phone, gender, birthDate) {
   var periodStart = new Date().toISOString();
-  var form = document.getElementById('patient-create-form');
-  var firstname = form.elements['patient-create-firstname'].value;
-  var lastNamed = form.elements['patient-create-lastname'].value;
-  console.log("lastname: " + lastNamed);
 
   return {
     resourceType: 'Patient',
-    "extension": [
-      {
-        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
-        "valueCode": "M"
-      },
-      {
-        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
-        "extension": [
-          {
-            "url": "ombCategory",
-            "valueCoding": {
-              "system": "urn:oid:2.16.840.1.113883.6.238",
-              "code": "2028-9",
-              "display": "Asian"
-            }
-          },
-          {
-            "url": "detailed",
-            "valueCoding": {
-              "system": "urn:oid:2.16.840.1.113883.6.238",
-              "code": "2039-6",
-              "display": "Japanese"
-            }
-          }
-        ]
-      },
-      {
-        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
-        "extension": [
-          {
-            "url": "ombCategory",
-            "valueCoding": {
-              "system": "urn:oid:2.16.840.1.113883.6.238",
-              "code": "2186-5",
-              "display": "Non Hispanic or Latino"
-            }
-          }
-        ]
-      }
-    ],
     identifier: [
       {
         assigner: {
@@ -372,84 +317,30 @@ function patientJSON(firstName, middleName, lastName, phone, gender, birthDate) 
       }
     ],
     active: true,
-    "name": [
+    name: [
       {
-        "use": "official",
-        "family": "RogersSmith",
-        "given": [
-          "Randy",
-          "Ron"
+        use: 'official',
+        family: [
+          lastName
         ],
-        "period": {
-          "start": "2012-05-22T15:45:50.000Z"
-        }
-      },
-      {
-        "use": "official",
-        "given": [
-          "Ron"
+        given: [
+          firstName,
+          middleName
         ],
-        "period": {
-          "start": "2012-05-22T15:45:50.000Z"
+        period: {
+          start: periodStart
         }
       }
     ],
-    //telecom: [
-    //  {
-    //    system: 'phone',
-    //    value: phone,
-    //    use: 'home'
-    //  }
-    //],a
-    gender: "male",
-    birthDate: birthDate,
-    address: [
+    telecom: [
       {
-        "use": "home",
-        "line": [
-          "121212 Metcalf Drive",
-          "Apartment 403"
-        ],
-        "city": "Kansas City",
-        "district": "Jackson",
-        "state": "KS",
-        "postalCode": "64199",
-        "country": "United States of America",
-        "period": {
-          "start": "2012-05-17T15:33:18.000Z"
-        }
+        system: 'phone',
+        value: phone,
+        use: 'home'
       }
     ],
-    "maritalStatus": {
-      "coding": [
-        {
-          "system": "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
-          "code": "UNK",
-          "display": "Unknown"
-        }
-      ],
-      "text": "Unknown"
-    },
-    "communication": [
-      {
-        "language": {
-          "coding": [
-            {
-              "system": "urn:ietf:bcp:47",
-              "code": "en",
-              "display": "English"
-            }
-          ],
-          "text": "English"
-        },
-        "preferred": true
-      }
-    ],
-    "generalPractitioner": [
-      {
-        "reference": "Practitioner/593923"
-      }
-    ]
+    gender: gender,
+    birthDate: birthDate
   };
 }
 
