@@ -400,7 +400,7 @@ function patientJSON(firstName, middleName, lastName, phone, gender, birthDate) 
     //    value: phone,
     //    use: 'home'
     //  }
-    //],
+    //],a
     gender: "male",
     birthDate: birthDate,
     address: [
