@@ -40,6 +40,9 @@ FHIR.oauth2.ready(function(smart) {
 
       function(slots) {
         if (slots.length) {
+          // new line below
+          sessionStorage.setItem('slots', JSON.stringify(slots));
+          // new line above
           var slotsHTML = '';
           slots.forEach(function(slot) {
             console.log("Slot object:", slot); 
@@ -66,6 +69,22 @@ FHIR.oauth2.ready(function(smart) {
     );
   });
 }
+// Below is new to hopefully help
+// Retrieve slots from session storage
+var storedSlots = sessionStorage.getItem('slots');
+var slots = JSON.parse(storedSlots);
+
+// Now you can refer to slot.serviceType.text
+if (slots && slots.length) {
+  var slotsHTML = '';
+  slots.forEach(function(slot) {
+    // Access slot.serviceType.text here
+    slotsHTML += slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end, slot.status, slot.servicetype, slot.serviceType, slot.servicetype.text);
+  });
+  renderSlots(slotsHTML);
+}
+///above is new
+
 //changing type to servicetype
 function slotHTML(id, serviceType, start, end, status) {
   console.log('Slot: id:[' + id + '] serviceType:[' + serviceType + '] start:[' + start + '] end:[' + end + '] status:[' + status + ']');
