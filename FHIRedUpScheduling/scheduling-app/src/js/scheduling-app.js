@@ -44,7 +44,7 @@ FHIR.oauth2.ready(function(smart) {
           slots.forEach(function(slot) {
             console.log("Slot object:", slot); 
            // below changing slot.type.text to slot.servicetype
-            slotsHTML = slotsHTML + slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end);
+            slotsHTML = slotsHTML + slotHTML(slot.id, slot.serviceType.text, slot.start, slot.end, slot.status, slot.servicetype, slot.serviceType, slot.servicetype.text);
             console.log("Slots object:", slotsHTML); 
           });
 
